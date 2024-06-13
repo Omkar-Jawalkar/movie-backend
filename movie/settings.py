@@ -52,6 +52,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'movie.urls'
+AUTH_PROFILE_MODULE = 'movie_api.UserProfile'
 
 TEMPLATES = [
     {
