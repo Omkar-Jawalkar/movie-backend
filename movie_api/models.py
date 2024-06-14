@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.PROTECT)
+    name = models.CharField(max_length=100,default="test")
+    email = models.EmailField(max_length=200,default="testing@example.com")
 
 
 
