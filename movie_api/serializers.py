@@ -18,5 +18,5 @@ class ReviewSerializer(serializers.ModelSerializer):
 class  MovieSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True,read_only=True)
     class Meta:
-        model = Review
+        model = Movie
         fields = "__all__"
