@@ -14,6 +14,7 @@ class UserProfile(models.Model):
 class Movie(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
+    release_year = models
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     movie_type = models.CharField(max_length=100)

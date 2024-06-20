@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django.contrib.staticfiles',
     'rest_framework',
-    "movie_api"
+    "movie_api",
+    'django_filters',
+
 ]
 
 REST_FRAMEWORK = {

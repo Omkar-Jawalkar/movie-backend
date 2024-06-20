@@ -13,4 +13,7 @@ urlpatterns = [
     # review
     path('movies/<int:movie_id>/reviews/', views.list_reviews, name='list-reviews'),
     path('movies/<int:movie_id>/reviews/create/', views.create_review, name='create-review'),
+
+    # filter
+    path('movies/', views.movie_list, name='movie-list'),
 ]

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Movie, Review, UserProfile
 from .serializers import MovieSerializer,ReviewSerializer
+from .filters import MovieFilter
 
 @api_view(['GET'])
 def movie_list(request):
@@ -83,4 +84,13 @@ def list_reviews(request, movie_id):
 
     reviews = Review.objects.filter(movie=movie)
     serializer = ReviewSerializer(reviews, many=True)
+    return Response({"data" : serializer.data, "error" : {}})
+
+
+# filters
+
+@api_view(['GET'])
+def movie_list(request):
+    filterset = MovieFilter(request.GET, queryset=Movie.objects.all())
+    serializer = MovieSerializer(filterset.qs, many=True)
     return Response({"data" : serializer.data, "error" : {}})
