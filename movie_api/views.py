@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Movie, Review, UserProfile
 from rest_framework.pagination import PageNumberPagination
-
+from django.db.models import Q
 from .serializers import MovieSerializer,ReviewSerializer
 from .filters import MovieFilter
 
@@ -98,3 +98,13 @@ def list_reviews(request, movie_id):
     return paginator.get_paginated_response(serializer.data)
 
 
+# Searching
+
+@api_view(['GET'])
+def search_movies(request):
+    query = request.GET.get('q', '')
+    movies = Movie.objects.filter(
+        Q(name__icontains=query) | Q(description__icontains=query)
+    )
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
