@@ -2,13 +2,22 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Movie, Review, UserProfile
+from rest_framework.pagination import PageNumberPagination
+
 from .serializers import MovieSerializer,ReviewSerializer
 from .filters import MovieFilter
 
+
+class ReviewPagination(PageNumberPagination):
+    page_size = 5  # Number of reviews per page
+
+
+
 @api_view(['GET'])
 def movie_list(request):
-    movies = Movie.objects.all()
-    serializer = MovieSerializer(movies, many=True)
+    filterset = MovieFilter(request.GET, queryset=Movie.objects.all())
+    serializer = MovieSerializer(filterset.qs, many=True)
+    pagination_class = None
     return Response({"data" : serializer.data, "error" : {}})
 
 @api_view(['POST'])
@@ -83,14 +92,9 @@ def list_reviews(request, movie_id):
         return Response({'error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
 
     reviews = Review.objects.filter(movie=movie)
-    serializer = ReviewSerializer(reviews, many=True)
-    return Response({"data" : serializer.data, "error" : {}})
+    paginator = ReviewPagination()
+    paginated_reviews = paginator.paginate_queryset(reviews, request)
+    serializer = ReviewSerializer(paginated_reviews, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 
-# filters
-
-@api_view(['GET'])
-def movie_list(request):
-    filterset = MovieFilter(request.GET, queryset=Movie.objects.all())
-    serializer = MovieSerializer(filterset.qs, many=True)
-    return Response({"data" : serializer.data, "error" : {}})
